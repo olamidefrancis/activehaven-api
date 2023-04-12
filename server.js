@@ -31,7 +31,8 @@ const database={
     users:[
         {
             staffemail:'',
-            staffname:''
+            staffname:'',
+            id:''
          
         }
 
@@ -122,7 +123,7 @@ app.post('/register',(req, res)=>{
     sex: sex
     
    }).then(staff=>{
-    res.json(staff[0])
+    res.json("go")
    })
     })
     .then(trx.commit)
@@ -155,7 +156,7 @@ app.post('/clients',(req, res)=>{
     con4:con4
   }).then(response=>{
 
-    console.log("good");
+    res.json(response[0]);
   })
 
 })
@@ -168,13 +169,15 @@ app.post('/startshift',(req, res)=>{
   database.shiftstart[0].client=client;
   res.json('good')
  console.log( database.users[0].staffemail)
- 
+ console.log(check)
+
  activedb.select('name').from('staff')
          .where('email','=', database.users[0].staffemail)
          .then(resp=>{
           console.log(resp[0].name);
           database.users[0].staffname =resp[0].name;
-         })
+          
+         }).catch(err=>res.status(400).json('unable to get user'))
  //delay for two seconds lest dee if name will reflect
    setTimeout(()=>{
     activedb('shift')
@@ -187,15 +190,17 @@ app.post('/startshift',(req, res)=>{
     }).then(response=>{
       
       console.log(response[0]);
-      
+      database.users[0].id =response[0].id;
     })
-   
+    .catch(err=>res.status(400).json('unable to get user'))
 
-   },1000);
+   },2000);
 })
 
 app.post('/endshift',(req, res)=>{
-  const{end,rep1, rep2,rep3, rep4, rep5}= req.body;
+  const{end,rep1, rep2,rep3, rep4, rep5, staffEmail,client}= req.body;
+  console.log(client);
+  console.log(staffEmail);
   console.log(end)
   console.log(rep1)
   console.log(rep2)
@@ -207,8 +212,9 @@ app.post('/endshift',(req, res)=>{
   
 const slq= 
   activedb('shift')
-  .where('email','=',database.users[0].staffemail)
-  .where('client','=',database.shiftstart[0].client)
+ .where('email','=',staffEmail)
+  .where('client','=',client)
+  .whereNull('endtime')
   .returning('*')
   .update({
     endtime:end,
@@ -218,8 +224,16 @@ const slq=
    rep4:rereg4,
    rep5:rereg5,
   }).then(resp=>{
-    res.json(resp);
-  })
+    const  {starttime, endtime} =resp[0];
+    //need to capture if ni starttime or endtime
+
+    const hours = endtime -starttime;
+    console.log(endtime);
+    console.log(starttime);
+    res.json(hours);
+   
+    
+  }).catch(err=>res.status(400).json('Invalid Shit'))
  
  /* activedb('shift')
   .where('email','=',database.users[0].staffemail)
@@ -239,19 +253,20 @@ const slq=
 
 //just to save the ours
 app.post('/shifthours',(req, res)=>{
-  const{hours}= req.body;
+  const{hours, staffEmail,client}= req.body;
   console.log(hours)
   
 const slq= 
   activedb('shift')
-  .where('email','=',database.users[0].staffemail)
-  .where('client','=',database.shiftstart[0].client)
+  .where('email','=',staffEmail)
+  .where('client','=',client)
+  .whereNull('hours')
   .returning('*')
   .update({
     hours:hours
   }).then(resp=>{
-    res.json(resp);
-  })
+    res.json("today's");
+  }).catch(err=>res.status(400).json('Invalid hours'))
  
 
 })
@@ -265,4 +280,4 @@ const slq=
 
 
 
-app.listen(3000);
+app.listen(3001);
