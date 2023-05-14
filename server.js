@@ -101,7 +101,7 @@ app.post('/register',(req, res)=>{
     const salt = bcrypt.genSaltSync(saltRounds);
    //  const hashed =  await bcrypt.hash(password,10);
    const hash = bcrypt.hashSync(password,salt);
-   activehavent.transaction(trx=>{
+   activedb.transaction(trx=>{
     trx.insert({
      email: email,
      password:hash
