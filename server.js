@@ -274,7 +274,7 @@ const slq=
 
 
 app.listen(PORT||3001,()=>{
-console.log(`app is listening on port ${process.env.PORT}`)
+console.log(`app is listening on port ${PORT}`)
 }
  
 );
