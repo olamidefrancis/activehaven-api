@@ -68,10 +68,7 @@ shiftstart:[
 }
 
 
-app.get('/',(req ,res)=>{
-  
 
-})
 
 app.post('/signin',(req, res)=>{
 const{password,email}= req.body;
