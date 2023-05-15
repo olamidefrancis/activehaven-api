@@ -22,7 +22,7 @@ const activedb =knex({
   
     }
   });
-  activedb.connect();
+  
 
  /* activedb.select('*').from('staff').then(data=>{
     console.log(data);
