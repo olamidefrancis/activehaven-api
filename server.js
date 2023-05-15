@@ -15,12 +15,14 @@ const activedb =knex({
     client: 'pg',
     connection: {
       connectionString: process.env.DATABASE_URL,
-      ssl: true
-       
+      ssl: {
+        rejectUnauthorized: false
+      }
       
   
     }
   });
+  activedb.connect();
 
  /* activedb.select('*').from('staff').then(data=>{
     console.log(data);
