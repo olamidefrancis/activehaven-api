@@ -5,7 +5,7 @@ const app= express();
 const bodyParser = require('body-parser');
 const cors= require('cors');
 const knex = require('knex');
-
+const { useDeferredValue } = require('react');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001
@@ -14,15 +14,12 @@ const PORT = process.env.PORT || 3001
 const activedb =knex({
     client: 'pg',
     connection: {
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false
-      }
-      
-  
+      host : '127.0.0.1',
+      user : 'postgres',
+      password : 'test',
+      database : 'activehaven-api'
     }
   });
-  
 
  /* activedb.select('*').from('staff').then(data=>{
     console.log(data);
@@ -71,7 +68,7 @@ shiftstart:[
 
 
 app.get('/',(req ,res)=>{
-  res.send("hello")
+  
 
 })
 
@@ -88,7 +85,7 @@ const{password,email}= req.body;
     return activedb.select('*').from('staff')
     .where('email','=',email)
     .then(user=>{
-      res.status(200).json('go')
+      res.json('go')
      
     })
     .catch(err=>res.status(400).json('unable to get user'))
@@ -130,7 +127,7 @@ app.post('/register',(req, res)=>{
    })
    
    .catch(err=> res.status(400).json('unable to register'))
-     console.log(err)
+    
     
 })
 
@@ -275,9 +272,6 @@ const slq=
 
 
 
-app.listen(process.env.PORT||3001,()=>{
-console.log(`app is listening on port ${process.env.PORT}`)
-}
- 
+app.listen(process.env.PORT|| 3001
 );
 
