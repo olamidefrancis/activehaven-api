@@ -5,7 +5,7 @@ const app= express();
 const bodyParser = require('body-parser');
 const cors= require('cors');
 const knex = require('knex');
-const { useDeferredValue } = require('react');
+
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001
