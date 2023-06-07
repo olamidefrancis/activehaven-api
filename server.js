@@ -26,7 +26,7 @@ const activedb =knex({
 
  
   
-  activedb.connect();
+  
 
 
 
