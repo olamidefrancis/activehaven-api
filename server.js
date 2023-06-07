@@ -16,18 +16,24 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 3001
 
 
-const activedb =knex({
+/*const activedb =knex({
     client: 'pg',
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false
     }
+  });*/
+
+  const { activedb } = require('pg');
+
+  const activedb = new activedb({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
-
- /* activedb.select('*').from('staff').then(data=>{
-    console.log(data);
-  })*/
-
+  
+  activedb.connect();
 
 
 
