@@ -157,7 +157,7 @@ app.post('/clients',(req, res)=>{
 
     res.json(response[0]);
   })
-
+  .catch(err=> res.status(400).json('unable to register client'))
 })
 
 
