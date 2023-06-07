@@ -13,11 +13,9 @@ const PORT = process.env.PORT || 3001
 
 const activedb =knex({
     client: 'pg',
-    connection: {
-      host : '127.0.0.1',
-      user : 'postgres',
-      password : 'test',
-      database : 'activehaven-api'
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
     }
   });
 
@@ -272,6 +270,8 @@ const slq=
 
 
 
-app.listen(process.env.PORT|| 3001
+app.listen(process.env.PORT|| 3001,()=>{
+  console.log(`App is listening on port${process.env.PORT}`)
+}
 );
 
