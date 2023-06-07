@@ -66,7 +66,9 @@ shiftstart:[
 
 
 app.get('/',(req ,res)=>{
-  res.send("working")
+  res.json({
+    
+    "code": "working"})
 
 })
 
