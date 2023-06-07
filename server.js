@@ -7,6 +7,11 @@ const cors= require('cors');
 const knex = require('knex');
 
 require('dotenv').config();
+app.use(cors());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+
 
 const PORT = process.env.PORT || 3001
 
@@ -24,9 +29,7 @@ const activedb =knex({
   })*/
 
 
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
-app.use(cors());
+
 
 const database={
     users:[
