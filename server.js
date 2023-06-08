@@ -102,17 +102,17 @@ app.post('/register',(req, res)=>{
     const salt = bcrypt.genSaltSync(saltRounds);
    //  const hashed =  await bcrypt.hash(password,10);
    const hash = bcrypt.hashSync(password,salt);
-   activedb.TRANSACTION(trx=>{
-    trx.INSERT({
+   activedb.transaction(trx=>{
+    trx.insert({
      email: email,
      password:hash
     })
-    .INTO('login')
-    .RETURNING('email')
-    .THEN(loginemail=>{
+    .into('login')
+    .returning('email')
+    .then(loginemail=>{
       return trx('staff')
-   .RETURNING('*')
-   .INSERT({
+   .returning('*')
+   .insert({
     email:loginemail[0].email,
     name:name,
     password:hash,
