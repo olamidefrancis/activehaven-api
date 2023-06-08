@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3001
 
 const activedb =knex({
     client: 'pg',
-    connectionString: process.env.DATABASE_URL,
+    connectionString: "//gsvlujdglorkdn:860a5385895ab9f18af131f2341a59a2cf48d37840d50abcabaff61de948b371@ec2-18-205-44-21.compute-1.amazonaws.com:5432/dca8fo3thl6daL",
     ssl: {
       rejectUnauthorized: false
     }
