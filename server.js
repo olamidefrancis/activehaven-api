@@ -108,10 +108,10 @@ app.post('/register',(req, res)=>{
      password:hash
     })
     .into('login')
-    .returning('email')
+    .returning('email',['email'])
     .then(loginemail=>{
       return trx('staff')
-   .returning('*')
+   .returning('*',['email','name', 'password','tel', 'age', 'sex'])
    .insert({
     email:loginemail[0].email,
     name:name,
