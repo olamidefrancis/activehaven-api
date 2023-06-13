@@ -24,7 +24,7 @@ const activedb =knex({
     }
   });
 
- 
+  activedb();
   
   
 
