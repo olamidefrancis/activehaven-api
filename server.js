@@ -128,8 +128,10 @@ app.post('/register',(req, res)=>{
     .catch(trx.rollback)
    })
    
-   .catch(err=> res.status(400).json('unable to register'))
-    
+   .catch(err=> {
+    console.log(err)
+    res.status(400).json('unable to register')})
+ 
     
 })
 
