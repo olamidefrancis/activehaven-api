@@ -17,11 +17,11 @@ const PORT = process.env.PORT || 3001
 
 
 const activedb =knex({
-    client: 'pg',
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
+  client: 'pg',
+  connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized :false},
+  }
   });
 
 
@@ -155,10 +155,14 @@ app.post('/clients',(req, res)=>{
     con3:con3,
     con4:con4
   }).then(response=>{
-
+    console.log(response[0]);
     res.json(response[0]);
+   
   })
-  .catch(err=> res.status(400).json('unable to register client'))
+  .catch(err=> {
+    console.log(err)
+    res.status(400).json('unable to register')})
+ 
 })
 
 
@@ -167,17 +171,21 @@ app.post('/startshift',(req, res)=>{
   const check = start;
   database.shiftstart[0].starttime=start;
   database.shiftstart[0].client=client;
-  res.json('good')
+  
  console.log( database.users[0].staffemail)
  console.log(check)
 
  activedb.select('name').from('staff')
          .where('email','=', database.users[0].staffemail)
          .then(resp=>{
+            //check if there is response before sending good
+            if (resp){
+             return res.json('good')
+            }
           console.log(resp[0].name);
           database.users[0].staffname =resp[0].name;
           
-         }).catch(err=>res.status(400).json('unable to get user'))
+         })//.catch(err=>res.status(400).json('unable to get user'))
  //delay for two seconds lest dee if name will reflect
    setTimeout(()=>{
     activedb('shift')
@@ -192,7 +200,7 @@ app.post('/startshift',(req, res)=>{
       console.log(response[0]);
       database.users[0].id =response[0].id;
     })
-    .catch(err=>res.status(400).json('unable to get user'))
+    //.catch(err=> res.status(400).json('unable to get user'))
 
    },2000);
 })
